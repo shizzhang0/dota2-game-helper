@@ -21,7 +21,7 @@ DEFAULT_CONFIG = {
     'shard_active': True
 }
 
-GSI_FILENAME = 'gamestate_integration_dota2gh.cfg'
+GSI_FILENAME = 'gamestate_integration_d2gh.cfg'
 
 GSI_CFG_CONTENT = '''"Dota2 Game Helper Integration Configuration"
 {

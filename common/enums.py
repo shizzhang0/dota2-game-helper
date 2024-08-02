@@ -7,8 +7,19 @@ class BaseEnum(Enum):
         return [member.value for member in cls]
 
 
-class SoundEnum(BaseEnum):
-    GOLD_RUNE = 'gold_rune'
+class VoiceEnum(BaseEnum):
+    PROLOGUE = 'prologue.wav'
+    STACK = 'alarm_stack.wav'
+    MID_RUNES = 'alarm_mid_runes.wav'
+    BOUNTY_RUNES = 'alarm_bounty_runes.wav'
+    WISDOM_RUNES = 'alarm_wisdom_runes.wav'
+    LOTUS = 'alarm_lotus.wav'
+    NEUTRAL_ITEMS = 'alarm_neutral_items.wav'
+    DAYTIME = 'alarm_daytime.wav'
+    NIGHTTIME = 'alarm_night_time.wav'
+    ROSHAN = 'alarm_roshan.wav'
+    FIRST_TORMENTOR = 'alarm_first_tormentor.wav'
+    SHARD = 'alarm_shard.wav'
 
 
 class GameStateEnum(BaseEnum):

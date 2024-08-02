@@ -3,7 +3,7 @@ import sys
 import winreg
 
 import common.constants as constants
-from common.enums import SoundEnum
+from common.enums import VoiceEnum
 
 
 def get_current_dir():
@@ -18,8 +18,8 @@ def get_config_file():
     return os.path.join(get_current_dir(), constants.CONFIG_FILENAME)
 
 
-def get_sound_file(sound: SoundEnum):
-    return os.path.join(get_resource_dir(), sound.value)
+def get_wav_file(voice: VoiceEnum):
+    return os.path.join(get_resource_dir(), voice.value)
 
 
 def get_steam_dir():

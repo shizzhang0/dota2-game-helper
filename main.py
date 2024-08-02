@@ -134,7 +134,7 @@ class App(tk.Tk):
         text_widget.config(state=tk.DISABLED)
         text_widget.grid(row=7, column=0, columnspan=3, pady=5)
 
-        ttk.Button(right_frame, text='自动复制', command=self.on_btn_cfg).grid(row=8, column=0, columnspan=3,
+        ttk.Button(right_frame, text='自动复制', command=self.on_btn_copy).grid(row=8, column=0, columnspan=3,
                                                                                sticky=tk.EW, pady=5)
 
         # bottom
@@ -170,7 +170,7 @@ class App(tk.Tk):
         messagebox.showinfo('信息', '保存成功!')
 
     @staticmethod
-    def on_btn_cfg():
+    def on_btn_copy():
         try:
             utils.write_gsi_file()
         except Exception as error:
