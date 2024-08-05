@@ -1,6 +1,6 @@
 import logging
 
-from common.enums import GameStateEnum, VoiceEnum
+from common.enums import GameStateEnum, VoiceEnum, GameEventTypeEnum
 from common.constants import GAME_MODE_QUICK
 from model import GameState
 from config import global_config
@@ -12,28 +12,50 @@ log = logging.getLogger(__name__)
 class GameStateHandler:
 
     def __init__(self):
-
+        self.game_start_alarmed = False
         self.daytime_alarmed = False
         self.nighttime_alarmed = False
         self.last_roshan_dead_time = None
+        self.past_events = []
 
     def handle(self, json_data):
         state = None
         try:
             state = GameState(json_data)
         except Exception as e:
-            log.error(e)
+            log.error(f"json to GameState error : {e}")
 
         if state is None:
             return
 
         state_map = state.map
-        if state_map is not None and state_map.game_state == GameStateEnum.DOTA_GAMERULES_STATE_GAME_IN_PROGRESS:
+        state_events = state.events
+
+        if state_map is None:
+            return
+
+        if state_map.game_state == GameStateEnum.DOTA_GAMERULES_STATE_PRE_GAME:
+            if not self.game_start_alarmed:
+                self.game_start_alarmed = True
+                voice_play(VoiceEnum.PROLOGUE)
+
+        if state_map.game_state == GameStateEnum.DOTA_GAMERULES_STATE_GAME_IN_PROGRESS:
             game_time = state_map.clock_time
             is_daytime = state_map.daytime
 
-            if game_time == 0:
-                voice_play(VoiceEnum.PROLOGUE)
+            if not state_events:
+                new_events = [
+                    event for event in state_events
+                    if any(
+                        event.event_type != past.event_type and event.game_time == past.game_time
+                        for past in self.past_events
+                    )
+                ]
+
+                if not new_events:
+                    for new_event in state_events:
+                        if new_event.event_type is GameEventTypeEnum.ROSHAN_KILLED and global_config.roshan_active:
+                            self.last_roshan_dead_time = game_time
 
             if global_config.stack_active:
                 self.handle_stack(game_time)
@@ -147,3 +169,6 @@ class GameStateHandler:
 
         if shard_time == game_time:
             voice_play(VoiceEnum.SHARD)
+
+
+game_state_handler = GameStateHandler()

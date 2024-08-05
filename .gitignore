@@ -1,5 +1,7 @@
 .idea
 __pycache__
 venv
+resources
+
 app.log
 config.json

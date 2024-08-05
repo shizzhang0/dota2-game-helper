@@ -2,7 +2,7 @@ import logging
 import tkinter as tk
 from tkinter import ttk, messagebox
 from config import save_config, global_config
-from gsi import ServerManager
+from gsi import gsi_server
 from common.constants import GAME_MODE_QUICK, GAME_MODE_NORMAL
 from common import utils
 
@@ -181,7 +181,6 @@ class App(tk.Tk):
 
 
 if __name__ == '__main__':
-    server = ServerManager()
-    server.run()
+    gsi_server.run()
     app = App()
     app.mainloop()

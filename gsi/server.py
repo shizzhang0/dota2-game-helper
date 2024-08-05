@@ -2,7 +2,7 @@ import logging
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from threading import Thread
-from gsi.handler import GameStateHandler
+from gsi.handler import game_state_handler
 
 log = logging.getLogger(__name__)
 
@@ -14,7 +14,6 @@ class GSIServer(HTTPServer):
 
 class GSIRequestHandler(BaseHTTPRequestHandler):
     def __init__(self, request, client_address, server):
-        self.game_state_handler = GameStateHandler()
         super().__init__(request, client_address, server)
 
     def do_POST(self):
@@ -26,11 +25,11 @@ class GSIRequestHandler(BaseHTTPRequestHandler):
 
         try:
             json_data = json.loads(post_data)
-            # TODO: why str not dict
-            dict_data = json.loads(json_data)
-            self.game_state_handler.handle(dict_data)
+            # TODO: test
+            json_data = json.loads(json_data)
+            game_state_handler.handle(json_data)
         except json.JSONDecodeError:
-            log.error("invalid json received. raw data: %s", post_data.decode())
+            log.error(f"fail to load json : {post_data.decode()}")
 
     def log_message(self, format, *args):
         """ don't use sys.stderr in pyinstaller with --noconsole"""
@@ -55,3 +54,6 @@ class ServerManager:
         self.server.server_close()
         self.thread.join()
         log.info("dota2 gsi server shutdown")
+
+
+gsi_server = ServerManager()

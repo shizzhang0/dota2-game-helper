@@ -1,3 +1,3 @@
-from gsi.server import ServerManager
-from gsi.handler import GameStateHandler
-from gsi.speaker import SpeakerTask
+from gsi.server import gsi_server
+from gsi.handler import game_state_handler
+from gsi.speaker import voice_play
