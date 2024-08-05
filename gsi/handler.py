@@ -39,6 +39,14 @@ class GameStateHandler:
                 self.game_start_alarmed = True
                 voice_play(VoiceEnum.PROLOGUE)
 
+        if state_map.game_state == GameStateEnum.DOTA_GAMERULES_STATE_POST_GAME:
+            if self.game_start_alarmed:
+                self.game_start_alarmed = False
+                self.daytime_alarmed = False
+                self.nighttime_alarmed = False
+                self.last_roshan_dead_time = None
+                self.past_events = []
+
         if state_map.game_state == GameStateEnum.DOTA_GAMERULES_STATE_GAME_IN_PROGRESS:
             game_time = state_map.clock_time
             is_daytime = state_map.daytime
