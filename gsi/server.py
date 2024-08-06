@@ -26,7 +26,7 @@ class GSIRequestHandler(BaseHTTPRequestHandler):
         try:
             json_data = json.loads(post_data)
             # TODO: test require
-            json_data = json.loads(json_data)
+            # json_data = json.loads(json_data)
             game_state_handler.handle(json_data)
         except json.JSONDecodeError:
             log.error(f"fail to load json : {post_data.decode()}")
