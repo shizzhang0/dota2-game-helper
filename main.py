@@ -44,6 +44,7 @@ class App(tk.Tk):
         self.config = {}
         self.init_config()
 
+        self.iconbitmap(utils.get_icon_file())
         self.create_widget()
 
     def init_config(self):
@@ -135,7 +136,7 @@ class App(tk.Tk):
         text_widget.grid(row=7, column=0, columnspan=3, pady=5)
 
         ttk.Button(right_frame, text='自动复制', command=self.on_btn_copy).grid(row=8, column=0, columnspan=3,
-                                                                               sticky=tk.EW, pady=5)
+                                                                                sticky=tk.EW, pady=5)
 
         # bottom
         ttk.Button(bottom_frame, text='保存', command=self.on_btn_save).grid(row=0, column=1)
@@ -174,7 +175,7 @@ class App(tk.Tk):
         try:
             utils.write_gsi_file()
         except Exception as error:
-            log.error(error)
+            log.error(f"fail to write cfg file : {error}")
             messagebox.showerror('错误', '复制失败请手动操作!')
             return
         messagebox.showinfo('信息', '复制成功!')

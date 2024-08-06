@@ -2,8 +2,8 @@
 
 
 a = Analysis(
-    ['main.py','config.py'],
-    pathex=['./gsi','./model','./common'],
+    ['main.py', 'config.py'],
+    pathex=['./gsi:./model:./common'],
     binaries=[],
     datas=[],
     hiddenimports=[],
@@ -22,7 +22,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='main',
+    name='dota2-game-helper',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -35,4 +35,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    icon=['d2gh.ico'],
 )

@@ -23,7 +23,7 @@ class GameStateHandler:
         try:
             state = GameState(json_data)
         except Exception as e:
-            log.error(f"json to GameState error : {e}")
+            log.error(f"fail to transfer json to GameState : {e}")
 
         if state is None:
             return

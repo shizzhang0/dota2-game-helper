@@ -18,6 +18,10 @@ def get_config_file():
     return os.path.join(get_current_dir(), constants.CONFIG_FILENAME)
 
 
+def get_icon_file():
+    return os.path.join(get_current_dir(), constants.ICON_FILENAME)
+
+
 def get_wav_file(voice: VoiceEnum):
     return os.path.join(get_resource_dir(), voice.value)
 

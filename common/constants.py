@@ -1,5 +1,7 @@
 RESOURCES_DIR = 'resources'
 
+ICON_FILENAME = 'd2gh.ico'
+
 CONFIG_FILENAME = 'config.json'
 
 DEFAULT_CONFIG = {
