@@ -65,7 +65,7 @@ class GameStateHandler:
                         if new_event.event_type is GameEventTypeEnum.ROSHAN_KILLED and global_config.roshan_active:
                             self.last_roshan_dead_time = game_time
 
-            if global_config.stack_active:
+            if global_config.stack_active and game_time > 60:
                 self.handle_stack(game_time)
 
             if global_config.mid_runes_active:
