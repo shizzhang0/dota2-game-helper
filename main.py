@@ -12,15 +12,27 @@ logging.basicConfig(filename='app.log', level=logging.INFO,
 log = logging.getLogger(__name__)
 
 
-def add_radio_group(parent, row_index, label_text, options, string_val):
+def add_radio_group(parent, row_index, label_text, options, string_var):
     label = ttk.Label(parent, text=label_text)
     label.grid(row=row_index, column=0, sticky=tk.EW, pady=5)
     for i, (text, value) in enumerate(options):
-        radio_button = ttk.Radiobutton(parent, text=text, value=value, variable=string_val)
+        radio_button = ttk.Radiobutton(parent, text=text, value=value, variable=string_var)
         radio_button.grid(row=row_index, column=i + 1, sticky=tk.EW, pady=5)
 
 
-def add_number_input(parent, row_index, label_text, int_val):
+def add_checkbox_group(parent, row_index, label_text, options):
+    label = ttk.Label(parent, text=label_text)
+    label.grid(row=row_index, column=0, sticky=tk.EW, pady=5)
+    check_vars = []
+    for i, (text, value) in enumerate(options):
+        # TODO: levels neutral items
+        check_var = tk.IntVar(value=0)
+        check_vars.append(check_var)
+        check_button = ttk.Checkbutton(parent, text=text, variable=check_var)
+        check_button.grid(row=row_index, column=i + 1, sticky=tk.EW, pady=5)
+
+
+def add_number_input(parent, row_index, label_text, int_var):
     def validate_input(event):
         if not (event.char.isdigit() or event.char == '\b' or event.char == ''):
             messagebox.showwarning("警告", "请输入数字！")
@@ -28,7 +40,7 @@ def add_number_input(parent, row_index, label_text, int_val):
 
     label = ttk.Label(parent, text=label_text)
     label.grid(row=row_index, column=0, sticky=tk.EW, pady=5)
-    entry = ttk.Entry(parent, textvariable=int_val)
+    entry = ttk.Entry(parent, textvariable=int_var)
     entry.grid(row=row_index, column=1, sticky=tk.EW, pady=5)
     entry.bind("<Key>", validate_input)
 
@@ -49,27 +61,43 @@ class App(tk.Tk):
 
     def init_config(self):
         self.config['mode'] = tk.StringVar(value=global_config.mode)
+        self.config['mode'].trace_add('write', self.callback_mode)
 
         self.config['stack_active'] = tk.IntVar(value=int(global_config.stack_active))
+        self.config['stack_active'].trace_add('write', self.callback_stack_active)
         self.config['stack_delay'] = tk.IntVar(value=global_config.stack_delay)
+        self.config['stack_delay'].trace_add('write', self.callback_stack_delay)
 
         self.config['mid_runes_active'] = tk.IntVar(value=int(global_config.mid_runes_active))
+        self.config['mid_runes_active'].trace_add('write', self.callback_mid_runes_active)
         self.config['mid_runes_delay'] = tk.IntVar(value=global_config.mid_runes_delay)
+        self.config['mid_runes_delay'].trace_add('write', self.callback_mid_runes_delay)
 
         self.config['bounty_runes_active'] = tk.IntVar(value=int(global_config.bounty_runes_active))
+        self.config['bounty_runes_active'].trace_add('write', self.callback_bounty_runes_active)
         self.config['bounty_runes_delay'] = tk.IntVar(value=global_config.bounty_runes_delay)
+        self.config['bounty_runes_delay'].trace_add('write', self.callback_bounty_runes_delay)
 
         self.config['wisdom_runes_active'] = tk.IntVar(value=int(global_config.wisdom_runes_active))
+        self.config['wisdom_runes_active'].trace_add('write', self.callback_wisdom_runes_active)
         self.config['wisdom_runes_delay'] = tk.IntVar(value=global_config.wisdom_runes_delay)
+        self.config['wisdom_runes_delay'].trace_add('write', self.callback_wisdom_runes_delay)
 
         self.config['lotus_active'] = tk.IntVar(value=int(global_config.lotus_active))
+        self.config['lotus_active'].trace_add('write', self.callback_lotus_active)
         self.config['lotus_delay'] = tk.IntVar(value=global_config.lotus_delay)
+        self.config['lotus_delay'].trace_add('write', self.callback_lotus_delay)
 
         self.config['neutral_items_active'] = tk.IntVar(value=int(global_config.neutral_items_active))
+        self.config['neutral_items_active'].trace_add('write', self.callback_neutral_items_active)
         self.config['daytime_active'] = tk.IntVar(value=int(global_config.daytime_active))
+        self.config['daytime_active'].trace_add('write', self.callback_daytime_active)
         self.config['roshan_active'] = tk.IntVar(value=int(global_config.roshan_active))
+        self.config['roshan_active'].trace_add('write', self.callback_roshan_active)
         self.config['first_tormentor_active'] = tk.IntVar(value=int(global_config.first_tormentor_active))
+        self.config['first_tormentor_active'].trace_add('write', self.callback_first_tormentor_active)
         self.config['shard_active'] = tk.IntVar(value=int(global_config.shard_active))
+        self.config['shard_active'].trace_add('write', self.callback_shard_active)
 
     def create_window(self, width, height):
         screenwidth = self.winfo_screenwidth()
@@ -143,31 +171,62 @@ class App(tk.Tk):
         bottom_frame.grid_columnconfigure(0, weight=1)
         bottom_frame.grid_columnconfigure(2, weight=1)
 
-    def on_btn_save(self):
+    def callback_mode(self, *args):
         global_config.mode = self.config['mode'].get()
 
+    def callback_stack_active(self, *args):
         global_config.stack_active = bool(self.config['stack_active'].get())
+
+    def callback_stack_delay(self, *args):
         global_config.stack_delay = self.config['stack_delay'].get()
 
+    def callback_mid_runes_active(self, *args):
         global_config.mid_runes_active = bool(self.config['mid_runes_active'].get())
+
+    def callback_mid_runes_delay(self, *args):
         global_config.mid_runes_delay = self.config['mid_runes_delay'].get()
 
+    def callback_bounty_runes_active(self, *args):
         global_config.bounty_runes_active = bool(self.config['bounty_runes_active'].get())
+
+    def callback_bounty_runes_delay(self, *args):
         global_config.bounty_runes_delay = self.config['bounty_runes_delay'].get()
 
+    def callback_wisdom_runes_active(self, *args):
         global_config.wisdom_runes_active = bool(self.config['wisdom_runes_active'].get())
+
+    def callback_wisdom_runes_delay(self, *args):
         global_config.wisdom_runes_delay = self.config['wisdom_runes_delay'].get()
 
+    def callback_lotus_active(self, *args):
         global_config.lotus_active = bool(self.config['lotus_active'].get())
+
+    def callback_lotus_delay(self, *args):
         global_config.lotus_delay = self.config['lotus_delay'].get()
 
+    def callback_neutral_items_active(self, *args):
         global_config.neutral_items_active = bool(self.config['neutral_items_active'].get())
+
+    def callback_daytime_active(self, *args):
         global_config.daytime_active = bool(self.config['daytime_active'].get())
+
+    def callback_roshan_active(self, *args):
         global_config.roshan_active = bool(self.config['roshan_active'].get())
+
+    def callback_first_tormentor_active(self, *args):
         global_config.first_tormentor_active = bool(self.config['first_tormentor_active'].get())
+
+    def callback_shard_active(self, *args):
         global_config.shard_active = bool(self.config['shard_active'].get())
 
-        save_config(global_config)
+    @staticmethod
+    def on_btn_save():
+        try:
+            save_config(global_config)
+        except Exception as error:
+            log.error(f"fail to save config : {error}")
+            messagebox.showerror('错误', '保存失败，请删除config.json后重新打开程序')
+            return
         messagebox.showinfo('信息', '保存成功!')
 
     @staticmethod
