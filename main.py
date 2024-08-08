@@ -20,16 +20,21 @@ def add_radio_group(parent, row_index, label_text, options, string_var):
         radio_button.grid(row=row_index, column=i + 1, sticky=tk.EW, pady=5)
 
 
-def add_checkbox_group(parent, row_index, label_text, options):
+def add_checkbox_group(parent, row_index, label_text, options, int_vars):
     label = ttk.Label(parent, text=label_text)
     label.grid(row=row_index, column=0, sticky=tk.EW, pady=5)
-    check_vars = []
-    for i, (text, value) in enumerate(options):
-        # TODO: levels neutral items
-        check_var = tk.IntVar(value=0)
-        check_vars.append(check_var)
-        check_button = ttk.Checkbutton(parent, text=text, variable=check_var)
-        check_button.grid(row=row_index, column=i + 1, sticky=tk.EW, pady=5)
+    group_frame = ttk.Frame(parent)
+    group_frame.grid(row=row_index, column=1, columnspan=2, sticky=tk.EW, pady=5)
+
+    options_len = len(options)
+    for i, text in enumerate(options):
+        check_button = ttk.Checkbutton(group_frame, text=text, variable=int_vars[i])
+        if options_len <= 3:
+            check_button.grid(row=row_index, column=i, sticky=tk.EW)
+        else:
+            row_j = int(i / 3)
+            col_j = row_j * 3
+            check_button.grid(row=row_index + row_j, column=i + 1 - col_j, sticky=tk.EW)
 
 
 def add_number_input(parent, row_index, label_text, int_var):
@@ -88,8 +93,13 @@ class App(tk.Tk):
         self.config['lotus_delay'] = tk.IntVar(value=global_config.lotus_delay)
         self.config['lotus_delay'].trace_add('write', self.callback_lotus_delay)
 
-        self.config['neutral_items_active'] = tk.IntVar(value=int(global_config.neutral_items_active))
-        self.config['neutral_items_active'].trace_add('write', self.callback_neutral_items_active)
+        self.config['neutral_items_active'] = []
+        item_len = len(global_config.neutral_items_active)
+        for i in range(item_len):
+            self.config[f'neutral_item_{i}_active'] = tk.IntVar(value=int(global_config.neutral_items_active[i]))
+            self.config[f'neutral_item_{i}_active'].trace_add('write', self.callback_neutral_items_active)
+            self.config['neutral_items_active'].append(self.config[f'neutral_item_{i}_active'])
+
         self.config['daytime_active'] = tk.IntVar(value=int(global_config.daytime_active))
         self.config['daytime_active'].trace_add('write', self.callback_daytime_active)
         self.config['roshan_active'] = tk.IntVar(value=int(global_config.roshan_active))
@@ -136,7 +146,8 @@ class App(tk.Tk):
         add_radio_group(left_frame, 4, '赏金神符：', [('是', 1), ('否', 0)], self.config['bounty_runes_active'])
         add_radio_group(left_frame, 5, '智慧神符：', [('是', 1), ('否', 0)], self.config['wisdom_runes_active'])
         add_radio_group(left_frame, 6, '莲花：', [('是', 1), ('否', 0)], self.config['lotus_active'])
-        add_radio_group(left_frame, 7, '中立物品：', [('是', 1), ('否', 0)], self.config['neutral_items_active'])
+        add_checkbox_group(left_frame, 7, '中立物品：', ['一级', '二级', '三级', '四级', '五级'],
+                           self.config['neutral_items_active'])
         add_radio_group(left_frame, 8, '白天/黑夜：', [('是', 1), ('否', 0)], self.config['daytime_active'])
         add_radio_group(left_frame, 9, '肉山：', [('是', 1), ('否', 0)], self.config['roshan_active'])
         add_radio_group(left_frame, 10, '魔方(first)：', [('是', 1), ('否', 0)], self.config['first_tormentor_active'])
@@ -205,7 +216,8 @@ class App(tk.Tk):
         global_config.lotus_delay = self.config['lotus_delay'].get()
 
     def callback_neutral_items_active(self, *args):
-        global_config.neutral_items_active = bool(self.config['neutral_items_active'].get())
+        for i, int_var in enumerate(self.config['neutral_items_active']):
+            global_config.neutral_items_active[i] = bool(int_var.get())
 
     def callback_daytime_active(self, *args):
         global_config.daytime_active = bool(self.config['daytime_active'].get())

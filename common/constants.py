@@ -16,7 +16,7 @@ DEFAULT_CONFIG = {
     'wisdom_runes_delay': 15,
     'lotus_active': False,
     'lotus_delay': 8,
-    'neutral_items_active': False,
+    'neutral_items_active': [False, False, False, False, True],
     'daytime_active': False,
     'roshan_active': True,
     'first_tormentor_active': True,

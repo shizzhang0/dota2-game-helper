@@ -17,7 +17,7 @@ class Setting:
         self.wisdom_runes_delay: int = dict_.get('wisdom_runes_delay')
         self.lotus_active: bool = dict_.get('lotus_active')
         self.lotus_delay: int = dict_.get('lotus_delay')
-        self.neutral_items_active: bool = dict_.get('neutral_items_active')
+        self.neutral_items_active: [bool] = dict_.get('neutral_items_active')
         self.daytime_active: bool = dict_.get('daytime_active')
         self.roshan_active: bool = dict_.get('roshan_active')
         self.first_tormentor_active: bool = dict_.get('first_tormentor_active')

@@ -80,8 +80,9 @@ class GameStateHandler:
             if global_config.lotus_active:
                 self.handle_lotus(game_time)
 
-            if global_config.neutral_items_active:
-                self.handle_neutral_items(game_time)
+            for i, neutral_item_active in enumerate(global_config.neutral_items_active):
+                if neutral_item_active:
+                    self.handle_neutral_items(game_time, i)
 
             if global_config.daytime_active and not state_map.nightstalker_night:
                 self.handle_daytime(is_daytime)
@@ -136,14 +137,13 @@ class GameStateHandler:
             voice_play(VoiceEnum.LOTUS)
 
     @staticmethod
-    def handle_neutral_items(game_time):
+    def handle_neutral_items(game_time, i):
         neutral_items_times = [210, 510, 810, 1110, 1800] if global_config.mode == GAME_MODE_QUICK else [420, 1020,
                                                                                                          1620, 2220,
                                                                                                          3600]
 
-        for neutral_item_time in neutral_items_times:
-            if game_time == neutral_item_time:
-                voice_play(VoiceEnum.NEUTRAL_ITEMS)
+        if game_time == neutral_items_times[i]:
+            voice_play(VoiceEnum.NEUTRAL_ITEMS)
 
     def handle_daytime(self, is_daytime):
         if is_daytime and not self.daytime_alarmed:
