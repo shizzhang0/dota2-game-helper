@@ -51,7 +51,7 @@ class GameStateHandler:
             game_time = state_map.clock_time
             is_daytime = state_map.daytime
 
-            if not state_events:
+            if state_events:
                 new_events = [
                     event for event in state_events
                     if any(
@@ -60,8 +60,9 @@ class GameStateHandler:
                     )
                 ]
 
-                if not new_events:
-                    for new_event in state_events:
+                if new_events:
+                    for new_event in new_events:
+                        self.past_events.append(new_event)
                         if new_event.event_type is GameEventTypeEnum.ROSHAN_KILLED and global_config.roshan_active:
                             self.last_roshan_dead_time = game_time
 

@@ -1,13 +1,13 @@
 import logging
 import json
-from http.server import BaseHTTPRequestHandler, HTTPServer
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from threading import Thread
 from gsi.handler import game_state_handler
 
 log = logging.getLogger(__name__)
 
 
-class GSIServer(HTTPServer):
+class GSIServer(ThreadingHTTPServer):
     def __init__(self, server_address, request_handler):
         super().__init__(server_address, request_handler)
 
