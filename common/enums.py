@@ -20,6 +20,7 @@ class VoiceEnum(BaseEnum):
     ROSHAN = 'alarm_roshan.wav'
     FIRST_TORMENTOR = 'alarm_first_tormentor.wav'
     SHARD = 'alarm_shard.wav'
+    WARD_PURCHASE = 'alarm_ward_purchase.wav'
 
 
 class GameStateEnum(BaseEnum):

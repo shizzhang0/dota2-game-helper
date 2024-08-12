@@ -15,6 +15,7 @@ class GameStateHandler:
         self.game_start_alarmed = False
         self.daytime_alarmed = False
         self.nighttime_alarmed = False
+        self.last_ward_purchase_alarmed = False
         self.last_roshan_dead_time = None
         self.past_events = []
 
@@ -50,6 +51,7 @@ class GameStateHandler:
         if state_map.game_state == GameStateEnum.DOTA_GAMERULES_STATE_GAME_IN_PROGRESS:
             game_time = state_map.clock_time
             is_daytime = state_map.daytime
+            ward_purchase_cd = state_map.ward_purchase_cooldown
 
             if state_events:
                 new_events = [
@@ -96,6 +98,9 @@ class GameStateHandler:
 
             if global_config.shard_active:
                 self.handle_shard(game_time)
+
+            if global_config.ward_purchase_active:
+                self.handle_ward_purchase(game_time, ward_purchase_cd)
 
     @staticmethod
     def handle_stack(game_time):
@@ -178,6 +183,14 @@ class GameStateHandler:
 
         if shard_time == game_time:
             voice_play(VoiceEnum.SHARD)
+
+    def handle_ward_purchase(self, ward_purchase_cd):
+        if not self.last_ward_purchase_alarmed and ward_purchase_cd > 0:
+            self.last_ward_purchase_alarmed = True
+
+        if self.last_ward_purchase_alarmed and ward_purchase_cd == 0:
+            self.last_ward_purchase_alarmed = False
+            voice_play(VoiceEnum.WARD_PURCHASE)
 
 
 game_state_handler = GameStateHandler()

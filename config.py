@@ -22,6 +22,7 @@ class Setting:
         self.roshan_active: bool = dict_.get('roshan_active')
         self.first_tormentor_active: bool = dict_.get('first_tormentor_active')
         self.shard_active: bool = dict_.get('shard_active')
+        self.ward_purchase_active: bool = dict_.get('ward_purchase_active')
 
     def to_dict(self):
         return self.__dict__

@@ -20,7 +20,8 @@ DEFAULT_CONFIG = {
     'daytime_active': False,
     'roshan_active': True,
     'first_tormentor_active': True,
-    'shard_active': True
+    'shard_active': True,
+    'ward_purchase_active': False,
 }
 
 GSI_FILENAME = 'gamestate_integration_d2gh.cfg'

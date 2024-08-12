@@ -56,7 +56,7 @@ class App(tk.Tk):
         super().__init__()
 
         self.title("dota2-game-helper")
-        self.create_window(480, 460)
+        self.create_window(480, 500)
 
         self.config = {}
         self.init_config()
@@ -108,6 +108,8 @@ class App(tk.Tk):
         self.config['first_tormentor_active'].trace_add('write', self.callback_first_tormentor_active)
         self.config['shard_active'] = tk.IntVar(value=int(global_config.shard_active))
         self.config['shard_active'].trace_add('write', self.callback_shard_active)
+        self.config['ward_purchase_active'] = tk.IntVar(value=int(global_config.ward_purchase_active))
+        self.config['ward_purchase_active'].trace_add('write', self.callback_ward_purchase_active)
 
     def create_window(self, width, height):
         screenwidth = self.winfo_screenwidth()
@@ -152,6 +154,7 @@ class App(tk.Tk):
         add_radio_group(left_frame, 9, '肉山：', [('是', 1), ('否', 0)], self.config['roshan_active'])
         add_radio_group(left_frame, 10, '魔方(first)：', [('是', 1), ('否', 0)], self.config['first_tormentor_active'])
         add_radio_group(left_frame, 11, '魔晶：', [('是', 1), ('否', 0)], self.config['shard_active'])
+        add_radio_group(left_frame, 12, '侦察守卫：', [('是', 1), ('否', 0)], self.config['ward_purchase_active'])
 
         # right
         right_top = tk.Frame(right_frame)
@@ -230,6 +233,9 @@ class App(tk.Tk):
 
     def callback_shard_active(self, *args):
         global_config.shard_active = bool(self.config['shard_active'].get())
+
+    def callback_ward_purchase_active(self, *args):
+        global_config.ward_purchase_active = bool(self.config['ward_purchase_active'].get())
 
     @staticmethod
     def on_btn_save():
