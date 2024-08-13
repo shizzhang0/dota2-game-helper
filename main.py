@@ -116,8 +116,7 @@ class App(tk.Tk):
         screenheight = self.winfo_screenheight()
         size = '%dx%d+%d+%d' % (width, height, (screenwidth - width) / 2, (screenheight - height) / 3)
         self.geometry(size)
-        self.wm_minsize(width=width, height=height)
-        self.wm_maxsize(width=width, height=height)
+        self.resizable(False, False)
 
     def create_widget(self):
         left_frame = tk.Frame(self)
