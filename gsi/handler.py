@@ -17,7 +17,7 @@ class GameStateHandler:
         self.nighttime_alarmed = False
         self.last_ward_purchase_alarmed = False
         self.last_roshan_dead_time = None
-        self.past_events = []
+        self.past_event_keys = set()
 
     def handle(self, json_data):
         state = None
@@ -46,7 +46,7 @@ class GameStateHandler:
                 self.daytime_alarmed = False
                 self.nighttime_alarmed = False
                 self.last_roshan_dead_time = None
-                self.past_events = []
+                self.past_event_keys.clear()
 
         if state_map.game_state == GameStateEnum.DOTA_GAMERULES_STATE_GAME_IN_PROGRESS:
             game_time = state_map.clock_time
@@ -54,17 +54,19 @@ class GameStateHandler:
             ward_purchase_cd = state_map.ward_purchase_cooldown
 
             if state_events:
-                new_events = [
-                    event for event in state_events
-                    if any(
-                        event.event_type != past.event_type and event.game_time == past.game_time
-                        for past in self.past_events
-                    )
-                ]
+                new_events = []
+                if not self.past_event_keys:
+                    new_events = list(state_events)
+                else:
+                    for event in state_events:
+                        event_key = (event.event_type, event.game_time)
+                        if event_key not in self.past_event_keys:
+                            new_events.append(event)
 
                 if new_events:
                     for new_event in new_events:
-                        self.past_events.append(new_event)
+                        new_event_key = (new_event.event_type, new_event.game_time)
+                        self.past_event_keys.add(new_event_key)
                         if new_event.event_type is GameEventTypeEnum.ROSHAN_KILLED and global_config.roshan_active:
                             self.last_roshan_dead_time = game_time
 
