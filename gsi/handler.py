@@ -102,7 +102,7 @@ class GameStateHandler:
                 self.handle_shard(game_time)
 
             if global_config.ward_purchase_active:
-                self.handle_ward_purchase(game_time, ward_purchase_cd)
+                self.handle_ward_purchase(ward_purchase_cd)
 
     @staticmethod
     def handle_stack(game_time):
