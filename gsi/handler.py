@@ -122,7 +122,7 @@ class GameStateHandler:
 
     @staticmethod
     def handle_bounty_runes(game_time):
-        bounty_runes_time = 180
+        bounty_runes_time = 240
         bounty_runes_alarm_time = bounty_runes_time - global_config.bounty_runes_delay
 
         if (game_time - bounty_runes_alarm_time) % bounty_runes_time == 0:
@@ -174,7 +174,7 @@ class GameStateHandler:
 
     @staticmethod
     def handle_first_tormentor(game_time):
-        first_tormentor_time = 1200
+        first_tormentor_time = 900 if global_config.mode == GAME_MODE_QUICK else 450
 
         if first_tormentor_time == game_time:
             voice_play(VoiceEnum.FIRST_TORMENTOR)
