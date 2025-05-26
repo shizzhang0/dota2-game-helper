@@ -174,7 +174,7 @@ class GameStateHandler:
 
     @staticmethod
     def handle_first_tormentor(game_time):
-        first_tormentor_time = 900 if global_config.mode == GAME_MODE_QUICK else 450
+        first_tormentor_time = 1200 if global_config.mode == GAME_MODE_QUICK else 600
 
         if first_tormentor_time == game_time:
             voice_play(VoiceEnum.FIRST_TORMENTOR)

@@ -16,7 +16,7 @@ dota2-game-helper是一个基于Valve提供的GSI(游戏状态集成)能力，�
 ### 使用方法
 * 从发布页面下载最新版本的dota2-game-helper.exe，也可以拉取项目运行`build.py`进行编译
 * 首次启动时，需要将cfg配置文件复制到dota2游戏目录`steamapps/common/dota 2 beta/game/dota/cfg/gamestate_integration`
-* 目前支持版本7.38
+* 目前支持版本7.39
 
 ### 注意事项
 * 本工具仅作为游戏辅助，不保证能直接影响游戏结果。
