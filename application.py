@@ -5,11 +5,7 @@ from config import save_config, global_config
 from common.constants import GAME_MODE_QUICK, GAME_MODE_NORMAL
 from common import utils
 
-logging.basicConfig(filename='app.log', level=logging.INFO,
-                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-
 log = logging.getLogger(__name__)
-
 
 def add_checkbox_group(parent, row_index, label_text, options, int_vars):
     label = ttk.Label(parent, text=label_text)
